@@ -1,50 +1,22 @@
 import json
 import urllib.request
 import matplotlib.pyplot as plt
+import itertools
 
-urls = {
-    'ticker' : 'https://bitbay.net/API/Public/BTCPLN/ticker.json',
-    'order' : 'https://bitbay.net/API/Public/BTCPLN/orderbook.json',
-}
+request_ticker = urllib.request.urlopen('https://bitbay.net/API/Public/BTCPLN/ticker.json')
+data_ticker = json.loads(request_ticker.read().decode('utf-8'))
 
-def request(url):
-    """download data from url"""
-    return urllib.request.urlopen(url)
+request_order = request_ticker = urllib.request.urlopen('https://bitbay.net/API/Public/BTCPLN/orderbook.json')
+data_order = json.loads(request_order.read().decode('utf-8'))
 
+bids = data_order['bids']
+asks = data_order['asks']
 
-def decode(data):
-    """decode json"""
-    return json.loads(data.read().decode('utf-8'))
+bid_x,bid_y = zip(*bids)
+ask_x,ask_y = zip(*asks)
 
-def valid(data):
-    if 'code' in data:
-        return False
-    else:
-        return True
-        
-def running_sum(data):
-    total = 0
-    for item in data:
-        total += item
-        yield total
-
-data_ticker = decode(request(urls.get('ticker')))
-print('ticker', data_ticker)
-
-data_order = decode(request(urls.get('order')))
-if not valid(data_order):
-    print('error')
-
-bids = data_order.get('bids')
-asks = data_order.get('asks')
-print('order bids',len(bids),bids)
-print('order asks', len(asks), asks)
-
-bid_x,bid_y = zip(*data_order.get('bids'))
-ask_x,ask_y = zip(*data_order.get('asks'))
-
-bid_y = list(running_sum(bid_y))
-ask_y = list(running_sum(ask_y))
+bid_y = list(itertools.accumulate(bid_y))
+ask_y = list(itertools.accumulate(ask_y))
 
 min_y = min(bid_y+ask_y)
 max_y = max(bid_y+ask_y)
