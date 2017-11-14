@@ -1,11 +1,12 @@
 import json
 import urllib.request
 
-ticker_url = 'https://bitbay.net/API/Public/BTCPLN/ticker.json'
-market_url = 'https://bitbay.net/API/Public/BTCPLN/market.json'
-orderbook_url = 'https://bitbay.net/API/Public/BTCPLN/orderbook.json'
-trades_url = 'https://bitbay.net/API/Public/BTCPLN/trades.json'
-
+urls = {
+    'ticker':'https://bitbay.net/API/Public/BTCPLN/ticker.json',
+    'market':'https://bitbay.net/API/Public/BTCPLN/market.json',
+    'order':'https://bitbay.net/API/Public/BTCPLN/orderbook.json',
+    'trade':'https://bitbay.net/API/Public/BTCPLN/trades.json'
+}
 
 def download(url):
     """download data from url"""
@@ -18,7 +19,6 @@ def decode(data):
 
 
 if __name__ == '__main__':
-    print(decode(download(ticker_url)))
-    print(decode(download(market_url)))
-    print(decode(download(orderbook_url)))
-    print(decode(download(trades_url)))
+    for k, v in urls.items():
+        data = decode(download(v))
+        print(data)
