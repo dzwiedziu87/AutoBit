@@ -28,37 +28,31 @@ def running_sum(data):
         total += item
         yield total
 
-if __name__ == '__main__':
+data_ticker = decode(request(urls.get('ticker')))
+print('ticker', data_ticker)
 
-    data_ticker = decode(request(urls.get('ticker')))
-    print('ticker', data_ticker)
+data_order = decode(request(urls.get('order')))
+if not valid(data_order):
+    print('error')
 
-    data_order = decode(request(urls.get('order')))
-    if not valid(data_order):
-        print('error')
+bids = data_order.get('bids')
+asks = data_order.get('asks')
+print('order bids',len(bids),bids)
+print('order asks', len(asks), asks)
 
-    bids = data_order.get('bids')
-    asks = data_order.get('asks')
-    print('order bids',len(bids),bids)
-    print('order asks', len(asks), asks)
+bid_x,bid_y = zip(*data_order.get('bids'))
+ask_x,ask_y = zip(*data_order.get('asks'))
 
-    bid_x,bid_y = zip(*data_order.get('bids'))
-    ask_x,ask_y = zip(*data_order.get('asks'))
+bid_y = list(running_sum(bid_y))
+ask_y = list(running_sum(ask_y))
 
-    bid_y = list(running_sum(reversed(bid_y)))
-    ask_y = list(running_sum(ask_y))
+min_y = min(bid_y+ask_y)
+max_y = max(bid_y+ask_y)
 
-    min_y = min(bid_y+ask_y)
-    max_y = max(bid_y+ask_y)
+plt.plot(bid_x,bid_y,label='aids')
+plt.plot(ask_x,ask_y,label='asks')
+for key in 'max','min','last','vwap','average':
+    plt.plot((data_ticker[key],data_ticker[key]),(min_y,max_y),linestyle=':',label=key+'='+str(data_ticker[key]))
 
-    plt.plot(bid_x,bid_y,label='aids')
-    plt.plot(ask_x,ask_y,label='asks')
-    for key in 'max','min','last','vwap','average':
-        plt.plot((data_ticker[key],data_ticker[key]),(min_y,max_y),linestyle=':',label=key+'='+str(data_ticker[key]))
-
-    plt.legend()
-    plt.show()
-
-
-
-
+plt.legend()
+plt.show()
