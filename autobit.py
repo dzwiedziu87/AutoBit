@@ -1,13 +1,9 @@
-import json
-import urllib.request
+from api import data_order,data_ticker
 import matplotlib.pyplot as plt
 import itertools
 
-request_ticker = urllib.request.urlopen('https://bitbay.net/API/Public/BTCPLN/ticker.json')
-data_ticker = json.loads(request_ticker.read().decode('utf-8'))
-
-request_order = request_ticker = urllib.request.urlopen('https://bitbay.net/API/Public/BTCPLN/orderbook.json')
-data_order = json.loads(request_order.read().decode('utf-8'))
+data_ticker = data_ticker()
+data_order = data_order()
 
 bids = data_order['bids']
 asks = data_order['asks']
