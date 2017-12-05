@@ -1,19 +1,17 @@
 import json
 import urllib.request
 
-_url_ticker = 'https://bitbay.net/API/Public/BTCPLN/ticker.json'
-_url_order = 'https://bitbay.net/API/Public/BTCPLN/orderbook.json'
 
-def _request(url):
-    """return request object"""
-    return urllib.request.urlopen(url)
+def createUrl(currency_from, currency_to, category):
+    """
+    returns formatted url
 
-def _data(request):
-    """return dict with data parsed from json from request object"""
-    return json.loads(request.read().decode('utf-8'))
+    >>> createUrl('BTC','PLN','trades')
+    'https://bitbay.net/API/Public/BTCPLN/trades.json'
+    """
+    return 'https://bitbay.net/API/Public/{currency_from}{currency_to}/{category}.json'.format(
+        currency_from=currency_from, currency_to=currency_to, category=category)
 
-def data_ticker():
-    return _data(_request(_url_ticker))
-
-def data_order():
-    return _data(_request(_url_order))
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()
