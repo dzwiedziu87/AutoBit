@@ -22,9 +22,7 @@ class Api:
         self.currency = currency
 
     def set_timelimit(self, timeLimit):
-        if timeLimit[-1] == 'd':
-            self.__time_limit = timedelta(days=int(timeLimit[:-1]))
-        elif timeLimit[-1] == 'h':
+        if timeLimit[-1] == 'h':
             self.__time_limit = timedelta(hours=int(timeLimit[:-1]))
         elif timeLimit[-1] == 'm':
             self.__time_limit = timedelta(minutes=int(timeLimit[:-1]))
@@ -34,7 +32,7 @@ class Api:
     def __build_base_url(self):
         return self.__base_url.format(currency=self.currency)
 
-    def build_url(self, since=''):
+    def __build_url(self, since=''):
         if since:
             return self.__build_base_url() + '&since={since}'.format(since=since)
         else:
@@ -60,7 +58,7 @@ class Api:
         limit = self.__limit()
 
         while True:
-            current_data = self.__download(self.build_url(since))
+            current_data = self.__download(self.__build_url(since))
 
             if not len(current_data):
                 break
@@ -78,7 +76,7 @@ class Api:
         return self.__data
 
 
-api = Api("BTC", '1m')
+api = Api("BTC", '1h')
 print(api)
 api.update()
 pprint(api.data())
