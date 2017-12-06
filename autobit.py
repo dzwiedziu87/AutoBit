@@ -66,7 +66,7 @@ class Api:
             self.__data += current_data
 
             last = self.__parse_date(self.__data)
-            print(datetime.fromtimestamp(last))
+
             if last < limit:
                 break
 
