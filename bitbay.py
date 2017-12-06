@@ -2,24 +2,25 @@ import json
 from datetime import datetime, timedelta
 from urllib.request import urlopen
 
+
 class BitBayApi:
     __base_url = 'https://bitbay.net/API/Public/{currency}PLN/trades.json?sort=desc'
     __valid_currency = ("BTC", "ETH", "LSK", "LTC", "GAME", "DASH", "BCC")
     __data = []
 
     def __init__(self, currency, timeLimit):
-        self.set_timelimit(timeLimit)
-        self.set_currency(currency)
+        self.__set_timelimit(timeLimit)
+        self.__set_currency(currency)
 
     def __str__(self):
         return "Api({currency},{time_limit})".format(currency=self.currency, time_limit=self.__time_limit)
 
-    def set_currency(self, currency):
+    def __set_currency(self, currency):
         if not currency in self.__valid_currency:
             raise ValueError('not valid currency')
         self.currency = currency
 
-    def set_timelimit(self, timeLimit):
+    def __set_timelimit(self, timeLimit):
         if timeLimit[-1] == 'h':
             self.__time_limit = timedelta(hours=int(timeLimit[:-1]))
         elif timeLimit[-1] == 'm':
