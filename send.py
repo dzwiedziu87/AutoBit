@@ -11,7 +11,7 @@ url = 'https://bitbay.net/API/Trading/tradingApi.php'
 
 def read_from_file(file_name):
     with open(file_name) as file:
-        return file.readline()
+        return file.readline().strip()
 
 
 key_pub = read_from_file('key_pub')
