@@ -11,6 +11,7 @@ class AppWindow(QMainWindow):
         self.setWindowTitle("AutoBit")
         self.setWindowIcon(QIcon('icon.png'))
 
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
