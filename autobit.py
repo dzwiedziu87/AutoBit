@@ -1,14 +1,13 @@
-from datetime import datetime
+import sys
 
-from bitbay import BitBayApi
-import matplotlib.pyplot as plt
+from PyQt5.QtWidgets import QApplication, QWidget
 
-api = BitBayApi("BTC",'1h')
-api.update()
-print(api.data())
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
 
-data_x = [x['date'] for x in api.data()]
-data_y = [x['price'] for x in api.data()]
+    w = QWidget()
+    w.resize(300,400)
+    w.setWindowTitle("AutoBit")
+    w.show()
 
-plt.plot(data_x,data_y)
-plt.show()
+    sys.exit(app.exec())
